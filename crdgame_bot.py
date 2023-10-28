@@ -11,8 +11,8 @@ suits_images = {'Spades': '♠', 'Hearts': '♥', 'Diamonds': '♦', 'Clubs': '�
 
 # Создание колоды карт
 ranks = [
-    '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King',
-    'Ace'
+    '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Валет', 'Дама', 'Король',
+    'Туз'
 ]
 
 # Уровень сложности по умолчанию (1 - отгадывание цвета масти)
@@ -66,9 +66,7 @@ def choose_level(message):
 # Функция для начала игры и генерации случайной карты
 def start_game(user_id):
   suit = random.choice(list(suits_images.keys()))  # Выбираем масть
-  global_suit = suit
   rank = random.choice(ranks)
-  global_rank = rank
   user_card[user_id] = {'suit': suit, 'rank': rank}
   user_stats.setdefault(user_id, {
       'correct': 0,
@@ -78,10 +76,10 @@ def start_game(user_id):
   if user_level[user_id] == 1:
     bot.send_message(user_id, f"Угадай цвет масти (Red or Black):")
   elif user_level[user_id] == 2:
-    bot.send_message(user_id, f"Угадай масть карты:\nRank: {rank}")
+    bot.send_message(user_id, f"Угадай масть карты:(Spades, Hearts, Clubs or Diamonds)")
   elif user_level[user_id] == 3:
     bot.send_message(
-        user_id, f"Угадай карту:\nRank: {rank}\nSuit: {suits_images[suit]}")
+        user_id, f"Угадай карту: ")
 
 
 # Функция для проверки угадывания

@@ -1,53 +1,38 @@
+## Refactoring and modificated by ChatGPT
 import os
 from PIL import Image, ImageDraw, ImageFont
 
-
+# Function to generate a card image
 def generate_card_image(suit, rank):
-    # Создаем новое изображение
     width, height = 80, 110
     image = Image.new("RGBA", (width, height), (255, 255, 255, 255))
-
-    # Создаем объект ImageDraw для рисования
     draw = ImageDraw.Draw(image)
-
-    # Задаем шрифт и размер текста
     font = ImageFont.truetype("Arial.ttf", size=20)
 
-    # Рисуем масть
-    if suit == "Hearts":
-        draw.text((10, 20), "♥", fill="red", font=font)
-        draw.text((10, 50), rank, fill="red", font=font, align='center')
-    elif suit == "Diamonds":
-        draw.text((10, 20), "♦", fill="red", font=font)
-        draw.text((10, 50), rank, fill="red", font=font, align='center')
-    elif suit == "Clubs":
-        draw.text((10, 20), "♣", fill="black", font=font)
-        draw.text((10, 50), rank, fill="black", font=font, align='center')
-    elif suit == "Spades":
-        draw.text((10, 20), "♠", fill="black", font=font)
-        draw.text((10, 50), rank, fill="black", font=font, align='center')
+    # Define the symbols and colors for each suit
+    suit_symbols = {"Hearts": "♥", "Diamonds": "♦", "Clubs": "♣", "Spades": "♠"}
+    suit_colors = {"Hearts": "red", "Diamonds": "red", "Clubs": "black", "Spades": "black"}
 
-    # Рисуем ранг
-    #draw.text((10, 50), rank, fill="black", font=font, align='center')
+    # Draw the suit symbol and rank
+    draw.text((10, 20), suit_symbols[suit], fill=suit_colors[suit], font=font)
+    draw.text((10, 50), rank, fill=suit_colors[suit], font=font, align='center')
 
     return image
 
-
-# Списки мастей и рангов
+# Lists of suits and ranks
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
-ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jacket", "Queen", "King", "Ace"]
+ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
 
-# Проверка и создание директории для хранения картинок
+# Check and create the directory for image storage
 dir_path = "cards"
 
-if not os.path.isdir(dir_path):
+if not os.path.exists(dir_path):
     os.mkdir(dir_path)
-    # Генерация и сохранение изображений для всех комбинаций
-    for suit in suits:
-        for rank in ranks:
-            image = generate_card_image(suit, rank)
-            image.save(f"{dir_path}/{suit}_{rank}.png")
-else:
-    print("The directory is present.")
 
-#xx = input('Press AnyKey..')
+# Generate and save images for all combinations
+for suit in suits:
+    for rank in ranks:
+        image = generate_card_image(suit, rank)
+        image.save(os.path.join(dir_path, f"{suit}_{rank}.png"))
+
+print("Images generated and saved.")
